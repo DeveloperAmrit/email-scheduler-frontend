@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import EmailTemplateEditor from './template';
 import { sendDataToServer } from './sendDataToServer';
 
-const isValidInput = ({ excelData, variables }) => {
+const isValidInput = (excelData, variables) => {
     if (!excelData) {
         alert("No excel data found");
         return false;
@@ -92,17 +92,8 @@ const UploadDoc = () => {
         if (isValidInput(excelData, variables)) {
           try {
             // Wait for the result of sending data to the server
-            const response = await sendDataToServer({
-              exceldata: excelData,
-              template: template,
-              varibales: variables,
-              subject: subject,
-              send_datetime_: send_datetime,
-            });
-            
-            // Log or handle the success response
-            console.log("From uploadDoc.jsx = ",response); 
-      
+            const response = await sendDataToServer(excelData,template,variables,subject,send_datetime);
+            alert(response); 
           } catch (err) {
             alert("Failed to send to server: " + err.message);
           }

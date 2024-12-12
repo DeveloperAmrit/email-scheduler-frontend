@@ -1,16 +1,6 @@
 import axios from 'axios';
 
-function makeBodiesFromTemplate({ exceldata, template, variables }) {
-  // Ensure valid input
-  if (!exceldata || !Array.isArray(exceldata) || exceldata.length === 0) {
-    throw new Error("Invalid exceldata input.");
-  }
-  if (!template || typeof template !== "string") {
-    throw new Error("Invalid template input.");
-  }
-  if (!variables || !Array.isArray(variables) || variables.length === 0) {
-    throw new Error("Invalid variables input.");
-  }
+function makeBodiesFromTemplate(exceldata, template, variables) {
 
   // Get the first row (header row) which contains the column names
   const headerRow = exceldata[0];
@@ -44,12 +34,17 @@ function makeBodiesFromTemplate({ exceldata, template, variables }) {
   return bodyContent;
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-export async function sendDataToServer({ exceldata, template, varibales, subject, send_datetime_ }) {
+
+export async function sendDataToServer(exceldata, template, varibales, subject, send_datetime_) {
   try {
     // Create bodies for each template
     let bodies = makeBodiesFromTemplate(exceldata, template, varibales);
-
+    console.log("Bodies = ",bodies);
+    console.log("Excel data ",exceldata);
     // Create an array to hold the promises
     let promises = [];
 
@@ -57,17 +52,18 @@ export async function sendDataToServer({ exceldata, template, varibales, subject
       // Make data object for each row
       let data = {
         to_email: exceldata[i][0],
-        cc_emails: exceldata[i][1],
-        bcc_emails: exceldata[i][2],
+        cc_emails: (!exceldata[i][1])? "" : exceldata[i][1],
+        bcc_emails: (!exceldata[i][2])? "" : exceldata[i][2],
         subject: subject,
         body: bodies[i - 1],
         send_datetime: send_datetime_,
       };
 
       // Prepare the asynchronous call
-      const sendData = async () => {
+      const sendData = async (data_) => {
         try {
-          const response = await axios.post('http://localhost:5000/schedule-email', data);
+          console.log(data_);
+          const response = await axios.post('http://localhost:5000/schedule-email', data_);
           console.log(`Scheduled for ${i}th row with response: ${response.data.message}`);
           return response.data.message; // Returning response message
         } catch (error) {
@@ -77,7 +73,8 @@ export async function sendDataToServer({ exceldata, template, varibales, subject
       };
 
       // Push the promise to the array
-      promises.push(sendData());
+      promises.push(sendData(data));
+      await delay(50);
     }
 
     // Wait for all the promises to resolve
