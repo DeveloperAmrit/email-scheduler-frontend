@@ -110,7 +110,7 @@ const UploadDoc = () => {
     }, []);
 
     return (
-        <div className='w-full py-5 bg-gray-100 min-h-screen flex flex-col justify-center'>
+        <div className='w-full pb-5 pt-24 bg-gray-100 min-h-screen flex flex-col justify-center'>
             <h2 className="text-3xl font-semibold text-center text-gray-700 mb-2">
                 Schedule By Sheet
             </h2>
@@ -118,13 +118,13 @@ const UploadDoc = () => {
                 <div className="w-full">
                     <EmailTemplateEditor template={template} setTemplate={setTemplate} variables={variables} setVariables={setVariables} />
                 </div>
-                <div className='w-full flex justify-between gap-6 items-center text-center'>
+                <div className='w-full flex flex-col lg:flex-row justify-between gap-6 items-center text-center'>
                     <div className='w-full text-lg min-h-7 flex gap-4'>
                         <label>Subject</label>
                         <input className='w-full min-h-7 border-2 border-slate-400' type="text" name='subject' required value={subject} onChange={(e) => setSubject(e.target.value)} />
                     </div>
                     <input className='min-h-7 text-lg border-2 border-slate-400 hover:border-black active:border-black' type="datetime-local" name="send_datetime" required id="send_datetime" min={datetimeMin} value={send_datetime} onChange={(e) => setSend_datetime(e.target.value)} />
-                    <div className='flex items-center gap-x-4'>
+                    <div className='flex items-center gap-x-4 border-2 border-slate-400'>
                         <input
                             type='file'
                             accept=".xlsx, .xls"
@@ -135,7 +135,7 @@ const UploadDoc = () => {
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting || send_datetime.length===0 || template.length===0 || excelData.length===0 || subject.length ===0}
-                        className='max-w-fit px-6 py-2 text-2xl bg-rose-600 text-white cursor-pointer border-2 rounded-sm hover:bg-rose-500 hover:border-rose-800 active:bg-rose-700 disabled:bg-rose-300'>Submit</button>
+                        className='max-w-fit px-6 py-2 text-2xl bg-rose-600 text-white cursor-pointer border-2 rounded-sm hover:bg-rose-500 hover:border-rose-800 active:bg-rose-700 disabled:bg-rose-300 disabled:cursor-not-allowed'>Submit</button>
                 </div>
             </div>
         </div>

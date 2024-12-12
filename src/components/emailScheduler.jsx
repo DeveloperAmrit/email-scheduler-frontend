@@ -34,6 +34,10 @@ function EmailScheduler() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(formData.to_email.toLowerCase().includes('iitj')){
+      alert("Email to domain with iitj has been temporarly banned. Otherwise i know what you can do :)");
+      return "Please use gmail domain :]";
+    }
     try {
       console.log("Trying to send...")
       const response = await axios.post('http://localhost:5000/schedule-email', {
@@ -55,8 +59,8 @@ function EmailScheduler() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100  pt-6">
-      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100  pt-12 pb-24">
+      <div className="w-80 sm:w-full max-w-lg bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-semibold text-center text-gray-700 mb-6">
           Schedule Email
         </h2>
@@ -73,7 +77,8 @@ function EmailScheduler() {
           <div className="text-center">
             <button
               type="submit"
-              className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              disabled={formData.to_email.length === 0 || formData.subject.length === 0 || formData.body.length === 0 || formData.send_datetime.length === 0}
+              className="w-full py-3 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
               Schedule Email
             </button>

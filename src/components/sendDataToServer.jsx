@@ -59,6 +59,11 @@ export async function sendDataToServer(exceldata, template, varibales, subject, 
         send_datetime: send_datetime_,
       };
 
+      if(data.to_email.toLowerCase().includes('iitj')){
+        alert("Email to domain with iitj has been temporarly banned. Otherwise i know what you can do :)");
+        return "Please use gmail domain :]";
+      }
+
       // Prepare the asynchronous call
       const sendData = async (data_) => {
         try {

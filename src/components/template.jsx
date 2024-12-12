@@ -34,7 +34,7 @@ const EmailTemplateEditor = ({template,setTemplate,variables,setVariables}) => {
   };
 
   return (
-    <div className="w-full min-h-96 p-4 mx-auto flex ">
+    <div className="w-full min-h-96 p-4 mx-auto flex flex-col md:flex-row">
       <div className="w-full min-h-96">
         <h1 className="w-full text-2xl font-bold mb-2">Email Template Editor</h1>
         <textarea
