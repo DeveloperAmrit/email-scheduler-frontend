@@ -40,7 +40,7 @@ function EmailScheduler() {
     }
     try {
       console.log("Trying to send...")
-      const response = await axios.post('http://localhost:5000/schedule-email', {
+      const response = await axios.post('https://email-scheduler-backend.vercel.app/schedule-email', {
         ...formData
       });
       setFormData({

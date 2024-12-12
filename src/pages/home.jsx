@@ -6,6 +6,7 @@ import EmailScheduler from '../components/emailScheduler';
 const Home = () => {
   return (
     <>
+        <div className='text-3xl text-black'>Hello</div>
         <UploadDoc />
         <hr />
         <EmailScheduler />
