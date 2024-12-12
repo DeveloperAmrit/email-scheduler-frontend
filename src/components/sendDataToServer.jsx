@@ -68,7 +68,7 @@ export async function sendDataToServer(exceldata, template, varibales, subject, 
       const sendData = async (data_) => {
         try {
           console.log(data_);
-          const response = await axios.post('http://localhost:5000/schedule-email', data_);
+          const response = await axios.post('https://backend-ten-pi-92.vercel.app/schedule-email', data_);
           console.log(`Scheduled for ${i}th row with response: ${response.data.message}`);
           return response.data.message; // Returning response message
         } catch (error) {
