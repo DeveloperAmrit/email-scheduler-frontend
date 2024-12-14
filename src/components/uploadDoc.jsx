@@ -111,9 +111,10 @@ const UploadDoc = () => {
 
     return (
         <div className='w-full pb-5 pt-24 bg-gray-100 min-h-screen flex flex-col justify-center'>
-            <h2 className="text-3xl font-semibold text-center text-gray-700 mb-2">
-                Schedule By Sheet
-            </h2>
+            <div className='flex justify-center items-center gap-6'>
+                <h2 className="text-3xl font-semibold text-center text-gray-700 mb-2">Schedule By Sheet</h2>
+                <a className='text-red-600' href="https://docs.google.com/document/d/1oFVl_6cBwNBQXG6_qgkfGKG7KZ9NaR39cEVi7kUh5DU/edit?usp=sharing" target='__blank'>How to use</a>
+            </div>
             <div className='flex flex-col justify-between items-center gap-4 p-5'>
                 <div className="w-full">
                     <EmailTemplateEditor template={template} setTemplate={setTemplate} variables={variables} setVariables={setVariables} />
