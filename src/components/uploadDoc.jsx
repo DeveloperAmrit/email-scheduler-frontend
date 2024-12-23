@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import * as XLSX from "xlsx";
 import EmailTemplateEditor from './template';
 import { sendDataToServer } from './sendDataToServer';
@@ -66,7 +66,7 @@ const UploadDoc = () => {
     const [send_datetime, setSend_datetime] = useState("");
     const [datetimeMin, setDatetimeMin] = useState("");
     const [subject, setSubject] = useState("");
-    const [isSubmitting,setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -84,23 +84,25 @@ const UploadDoc = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         console.log("Excel Data Submitted:", excelData);
-        
-        if (isValidInput(excelData, variables)) {
-          try {
-            // Wait for the result of sending data to the server
-            const response = await sendDataToServer(excelData,template,variables,subject,send_datetime);
-            alert(response); 
-          } catch (err) {
-            alert("Failed to send to server: " + err.message);
-          }
-        }
-        setIsSubmitting(false);
-      };
-      
+
+        async function sendData() {
+            if (isValidInput(excelData, variables)) {
+                try {
+                    // Wait for the result of sending data to the server
+                    const response = await sendDataToServer(excelData, template, variables, subject, send_datetime);
+                    alert(response);
+                } catch (err) {
+                    alert("Failed to send to server: " + err.message);
+                }
+            }
+            setIsSubmitting(false);
+        };
+        sendData();
+    }
 
     useEffect(() => {
         const now = new Date();
@@ -135,8 +137,8 @@ const UploadDoc = () => {
                     </div>
                     <button
                         onClick={handleSubmit}
-                        disabled={isSubmitting || send_datetime.length===0 || template.length===0 || excelData.length===0 || subject.length ===0}
-                        className='max-w-fit px-6 py-2 text-2xl bg-rose-600 text-white cursor-pointer border-2 rounded-sm hover:bg-rose-500 hover:border-rose-800 active:bg-rose-700 disabled:bg-rose-300 disabled:cursor-not-allowed'>Submit</button>
+                        disabled={isSubmitting || send_datetime.length === 0 || template.length === 0 || excelData.length === 0 || subject.length === 0}
+                        className='max-w-fit px-6 py-2 text-2xl bg-rose-600 text-white cursor-pointer border-2 rounded-sm hover:bg-rose-500 hover:border-rose-800 active:bg-rose-700 disabled:bg-rose-300 disabled:cursor-not-allowed'> {(isSubmitting) ? "Scheduling..." : "Submit"}</button>
                 </div>
             </div>
         </div>

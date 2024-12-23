@@ -39,6 +39,7 @@ function EmailScheduler() {
     async function sendData(){
       if(formData.to_email.toLowerCase().includes('iitj')){
         alert("Email to domain with iitj has been temporarly banned. Otherwise i know what you can do :)");
+        setIsSending(false);
         return "Please use gmail domain :]";
       }
       try {
@@ -55,11 +56,11 @@ function EmailScheduler() {
           send_datetime: '',
         });
         alert(response.data.message);
+        setIsSending(false);
       } catch (error) {
         alert('Failed to schedule email.');
-        console.error(error);
-      } finally {
         setIsSending(false);
+        console.error(error);
       }
     }
     sendData();
@@ -87,7 +88,7 @@ function EmailScheduler() {
               disabled={formData.to_email.length === 0 || formData.subject.length === 0 || formData.body.length === 0 || formData.send_datetime.length === 0 || isSending}
               className="w-full py-3 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
-              Schedule Email
+              {(isSending)? "Scheduling..." : "Schedule Email"}
             </button>
           </div>
         </form>
