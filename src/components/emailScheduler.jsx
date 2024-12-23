@@ -26,36 +26,43 @@ function EmailScheduler() {
     body: '',
     send_datetime: '',
   }
+  const [isSending,setIsSending] = useState(false);
   const [formData, setFormData] = useState(initialData);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(formData.to_email.toLowerCase().includes('iitj')){
-      alert("Email to domain with iitj has been temporarly banned. Otherwise i know what you can do :)");
-      return "Please use gmail domain :]";
+    setIsSending(true);
+    async function sendData(){
+      if(formData.to_email.toLowerCase().includes('iitj')){
+        alert("Email to domain with iitj has been temporarly banned. Otherwise i know what you can do :)");
+        return "Please use gmail domain :]";
+      }
+      try {
+        console.log("Trying to send...")
+        const response = await axios.post('https://backend-ten-pi-92.vercel.app/schedule-email', {
+          ...formData
+        });
+        setFormData({
+          to_email: '',
+          cc_emails: '',
+          bcc_emails: '',
+          subject: '',
+          body: '',
+          send_datetime: '',
+        });
+        alert(response.data.message);
+      } catch (error) {
+        alert('Failed to schedule email.');
+        console.error(error);
+      } finally {
+        setIsSending(false);
+      }
     }
-    try {
-      console.log("Trying to send...")
-      const response = await axios.post('https://backend-ten-pi-92.vercel.app/schedule-email', {
-        ...formData
-      });
-      setFormData({
-        to_email: '',
-        cc_emails: '',
-        bcc_emails: '',
-        subject: '',
-        body: '',
-        send_datetime: '',
-      });
-      alert(response.data.message);
-    } catch (error) {
-      alert('Failed to schedule email.');
-      console.error(error);
-    }
+    sendData();
   };
 
   return (
@@ -77,7 +84,7 @@ function EmailScheduler() {
           <div className="text-center">
             <button
               type="submit"
-              disabled={formData.to_email.length === 0 || formData.subject.length === 0 || formData.body.length === 0 || formData.send_datetime.length === 0}
+              disabled={formData.to_email.length === 0 || formData.subject.length === 0 || formData.body.length === 0 || formData.send_datetime.length === 0 || isSending}
               className="w-full py-3 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
               Schedule Email
